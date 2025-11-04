@@ -1,5 +1,6 @@
 import PetDTO from "../dto/Pet.dto.js";
 import { petsService } from "../services/index.js"
+import { createMockPets } from "../services/pets.mock.js";
 import __dirname from "../utils/index.js";
 
 const getAllPets = async(req,res)=>{
@@ -43,10 +44,16 @@ const createPetWithImage = async(req,res) =>{
     const result = await petsService.create(pet);
     res.send({status:"success",payload:result})
 }
+const mockPets = async (req,res)=>{
+        let pets = createMockPets()
+        res.send({status: "succes", payload: pets})
+}
+
 export default {
     getAllPets,
     createPet,
     updatePet,
     deletePet,
-    createPetWithImage
+    createPetWithImage,
+    mockPets
 }
