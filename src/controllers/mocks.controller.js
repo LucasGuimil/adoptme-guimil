@@ -13,10 +13,11 @@ const mockUsers = async (req,res)=>{
 }
 
 const mockData = async (req,res)=> {
-    const {users,pets} = req.query
+    const {users = 0, pets=0 } = req.body
+    if ( !users && !pets) return res.status(400).send("No information has been provided.")
     let u = createMockUsers(users)
     let p = createMockPets(pets)
-    try {
+    try {   
         await usersService.create(u)
         await petsService.create(p)
         res.send({status: "success", users: u, pets: p})
