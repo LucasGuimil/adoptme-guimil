@@ -9,7 +9,7 @@ const mockPets = async (req,res)=>{
 
 const mockUsers = async (req,res)=>{
         let users = createMockUsers()
-        res.send({status: "succes", quantity: users.length, payload: users})
+        res.send({status: "success", quantity: users.length, payload: users})
 }
 
 const mockData = async (req,res)=> {

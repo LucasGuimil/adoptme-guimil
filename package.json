@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "test": "mocha src/test/pets.test.js"
+    "test": "mocha test/pets.test.js"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.9.0",
-    "chai": "^4.3.7",
+    "chai": "^4.5.0",
     "mocha": "^10.8.2"
   }
 }

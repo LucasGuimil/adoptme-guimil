@@ -1,5 +1,4 @@
 import { faker } from "@faker-js/faker";
-import { createHash } from "./index.js";
 import bcrypt from 'bcrypt';
 
 export const createMockPets = (q) => {
