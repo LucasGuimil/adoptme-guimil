@@ -8,6 +8,7 @@ import adoptionsRouter from './routes/adoption.router.js';
 import sessionsRouter from './routes/sessions.router.js';
 import mockRouter from './routes/mock.router.js';
 import dotenv from "dotenv"
+import errorHandler from "./middlewares/errors/index.js"
 
 dotenv.config()
 const app = express();
@@ -23,4 +24,5 @@ app.use('/api/adoptions',adoptionsRouter);
 app.use('/api/sessions',sessionsRouter);
 app.use('/api/mocks',mockRouter)
 
+app.use(errorHandler)
 app.listen(PORT,()=>console.log(`Listening on ${PORT}`))

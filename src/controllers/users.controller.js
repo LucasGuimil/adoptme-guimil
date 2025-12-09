@@ -9,16 +9,17 @@ const getAllUsers = async(req,res)=>{
     res.send({status:"success",payload:users})
 }
 
-const getUser = async(req,res)=> {
+const getUser = async(req,res,next)=> {
     const userId = req.params.uid;  
     if(!isValidObjectId(userId)){
-        CustomError.createError({
-            name: "Invalid ID error",
-            cause: invalidIdErrorInfo(userId),
-            message: "Error trying to find user by ID",
-            code: eErrors.INVALID_PARAM_ERROR
-        })
-    }
+        const error = new CustomError(
+            "Error trying to find user by ID", 
+            "Invalid ID error",
+            eErrors.INVALID_PARAM_ERROR,
+            invalidIdErrorInfo(userId)
+        )
+        return next(error)
+        }
     const user = await usersService.getUserById(userId);
     if(!user) return res.status(404).send({status:"error",error:"User not found"})
     res.send({status:"success",payload:user})
