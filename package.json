@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "nodemon src/app.js",
+    "dev": "nodemon src/app.js --mode dev",
     "test": "mocha test/pets.test.js"
   },
   "keywords": [],
@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "commander": "^14.0.2",
     "cookie-parser": "^1.4.6",
     "curl": "^0.1.4",
     "dotenv": "^17.2.3",
