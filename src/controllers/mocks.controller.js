@@ -1,3 +1,4 @@
+import config from "../config/config.js"
 import { petsService, usersService } from "../services/index.js"
 import { createMockPets, createMockUsers } from "../utils/mocks.js"
 
@@ -25,8 +26,18 @@ const mockData = async (req,res)=> {
         res.status(500).send(error)
     }
 }
+
+const loggerTest = async (req,res) => {
+    req.logger.fatal(`Fatal error in ${config.mode} mode.`)
+    req.logger.error(`Error in ${config.mode} mode.`)
+    req.logger.warning(`Warning in ${config.mode} mode.`)
+    req.logger.info(`Info message in ${config.mode} mode.`)
+    req.logger.http(`HTTP info in ${config.mode} mode.`)
+    req.logger.debug(`Debug message in ${config.mode} mode.`)
+}
 export default {
     mockPets,
     mockUsers,
-    mockData
+    mockData,
+    loggerTest
 }

@@ -1,8 +1,8 @@
 import { isValidObjectId } from "mongoose";
 import { usersService } from "../services/index.js"
 import CustomError from "../services/errors/CustomError.js";
-import { invalidIdErrorInfo } from "../services/errors/info.js";
-import eErrors from "../services/errors/enums.js";
+import { invalidIdErrorInfo } from "../services/errors/info.error.js";
+import listError from "../services/errors/list.error.js";
 
 const getAllUsers = async(req,res)=>{
     const users = await usersService.getAll();
@@ -15,7 +15,7 @@ const getUser = async(req,res,next)=> {
         const error = new CustomError(
             "Error trying to find user by ID", 
             "Invalid ID error",
-            eErrors.INVALID_PARAM_ERROR,
+            listError.INVALID_PARAM_ERROR,
             invalidIdErrorInfo(userId)
         )
         return next(error)

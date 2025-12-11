@@ -6,7 +6,7 @@ const mockRouter = Router()
 mockRouter.get("/mockingpets",mocksController.mockPets)
 mockRouter.get("/mockingusers",mocksController.mockUsers)
 mockRouter.post("/generateData",mocksController.mockData)
-
+mockRouter.get("/loggerTest", mocksController.loggerTest)
 
 
 export default mockRouter

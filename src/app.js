@@ -1,3 +1,3 @@
-import initializeServer from "./config/server.js";
+import initializeServer from "./config/server.config.js";
 
 initializeServer()

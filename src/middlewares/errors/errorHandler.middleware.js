@@ -1,7 +1,7 @@
-import eErrors from "../../services/errors/enums.js";
+import eErrors from "../../services/errors/list.error.js";
 
 export default (error,req,res,next)=>{
-    console.log(error.cause)
+    req.logger.error(error.cause)
     switch (error.code) {
         case eErrors.INVALID_PARAM_ERROR:
             res.status(400).send({status: "error",error: error.name})

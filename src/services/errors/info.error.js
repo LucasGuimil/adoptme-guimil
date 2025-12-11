@@ -18,5 +18,5 @@ export const generatePetErrorInfo = (pet)=> {
 }
 
 export const invalidIdErrorInfo = (id) => {
-    return `The provided ID is not valid, needs to be a valid ObjectID, received ${id}.`
+    return `The provided ID is not valid, needs to be a valid ObjectID, received ${typeof(id)}(${id}).`
 }
