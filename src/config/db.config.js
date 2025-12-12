@@ -1,12 +1,15 @@
 import config from "./config.js";
 import mongoose from "mongoose";
+import { logger } from "./logger.config.js";
 
 export default function connectDB(){
-    try {
-        const connection = mongoose.connect(config.mongoUrl)
-        if(config.mode=="dev") return console.log("Connected to local Mongo database!")
-        console.log("Connected to Mongo Atlas!")
-    } catch (error) {
-        console.log("Error trying to connect database")
-    }
+    logger.debug("Connecting database...")
+    mongoose.connect(config.mongoUrl)
+        .then(()=>{
+            if(config.mode==="dev") return logger.info("Connected to local Mongo database!")
+            logger.info("Connected to Mongo Atlas!")
+        })
+        .catch((error)=>{
+            logger.fatal("Error trying to connect database.")
+        })
 }

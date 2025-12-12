@@ -34,6 +34,7 @@ const loggerTest = async (req,res) => {
     req.logger.info(`Info message in ${config.mode} mode.`)
     req.logger.http(`HTTP info in ${config.mode} mode.`)
     req.logger.debug(`Debug message in ${config.mode} mode.`)
+    res.status(204).send()
 }
 export default {
     mockPets,

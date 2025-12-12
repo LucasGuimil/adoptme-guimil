@@ -1,43 +1,51 @@
 import { isValidObjectId } from "mongoose";
 import { usersService } from "../services/index.js"
 import CustomError from "../services/errors/CustomError.js";
-import { invalidIdErrorInfo } from "../services/errors/info.error.js";
+import { invalidIdErrorInfo, invalidRequest } from "../services/errors/info.error.js";
 import listError from "../services/errors/list.error.js";
 
-const getAllUsers = async(req,res)=>{
-    const users = await usersService.getAll();
-    res.send({status:"success",payload:users})
+const getAllUsers = async (req, res, next) => {
+    try {
+        const users = await usersService.getAll();
+        res.send({ status: "success", payload: users })
+    } catch (error) {
+        req.logger.error("Server error")
+        res.status(500).send()
+    }
 }
 
-const getUser = async(req,res,next)=> {
-    const userId = req.params.uid;  
-    if(!isValidObjectId(userId)){
-        const error = new CustomError(
-            "Error trying to find user by ID", 
-            "Invalid ID error",
-            listError.INVALID_PARAM_ERROR,
-            invalidIdErrorInfo(userId)
-        )
+const getUser = async (req, res, next) => {
+    const userId = req.params.uid;
+    try{
+    if (!isValidObjectId(userId)) {
+        const error = new CustomError(invalidIdErrorInfo(userId), listError.INVALID_PARAM_ERROR)
         return next(error)
-        }
+    }
     const user = await usersService.getUserById(userId);
-    if(!user) return res.status(404).send({status:"error",error:"User not found"})
-    res.send({status:"success",payload:user})
+    if (!user) {
+        const error = new CustomError( invalidRequest("user",userId), listError.INVALID_REQUEST)
+        return next(error)
+    }
+    res.send({ status: "success", payload: user })
+        } catch (error) {
+        req.logger.error("Server error")
+        res.status(500).send()
+    }
 }
 
-const updateUser =async(req,res)=>{
+const updateUser = async (req, res) => {
     const updateBody = req.body;
     const userId = req.params.uid;
     const user = await usersService.getUserById(userId);
-    if(!user) return res.status(404).send({status:"error", error:"User not found"})
-    const result = await usersService.update(userId,updateBody);
-    res.send({status:"success",message:"User updated"})
+    if (!user) return res.status(404).send({ status: "error", error: "User not found" })
+    const result = await usersService.update(userId, updateBody);
+    res.send({ status: "success", message: "User updated" })
 }
 
-const deleteUser = async(req,res) =>{
+const deleteUser = async (req, res) => {
     const userId = req.params.uid;
     const result = await usersService.getUserById(userId);
-    res.send({status:"success",message:"User deleted"})
+    res.send({ status: "success", message: "User deleted" })
 }
 
 export default {

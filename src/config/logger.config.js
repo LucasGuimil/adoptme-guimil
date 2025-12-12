@@ -12,12 +12,12 @@ const personalizedOptions = {
         debug: 5
     },
     colors: {
-        fatal: "black whiteBG bold",
+        fatal: "black redBG bold",
         error: "red bold",
         warning: "yellow bold",
         info: "blue bold",
         http: "green bold",
-        debug: "cyan bold"
+        debug: "magenta bold"
     }
 }
 
