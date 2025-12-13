@@ -12,6 +12,9 @@ import errorHandler from "../middlewares/errors/errorHandler.middleware.js"
 import { midLogger } from '../middlewares/logger.middleware.js';
 import { logger, stream } from './logger.config.js';
 import morgan from 'morgan';
+import swaggerJSDoc from 'swagger-jsdoc';
+import { swaggerOptions } from './swagger.config.js';
+import swagerUiExpress from 'swagger-ui-express'
 
 
 
@@ -19,11 +22,15 @@ const initializeServer = async ()=> {
 
     const app = express();
     await connectDB()
-
+    
+    const specs = swaggerJSDoc(swaggerOptions)
+    app.use('/apidocs', swagerUiExpress.serve,swagerUiExpress.setup(specs))
+    
     app.use(express.json());
     app.use(cookieParser());
     app.use(midLogger)
     app.use(morgan("dev",{stream: stream}))
+    
     app.use('/api/users', usersRouter);
     app.use('/api/pets', petsRouter);
     app.use('/api/adoptions', adoptionsRouter);
