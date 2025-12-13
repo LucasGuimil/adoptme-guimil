@@ -1,9 +1,8 @@
 import PetDTO from "../dto/Pet.dto.js";
-import { generatePetErrorInfo, invalidRequest, invalidIdErrorInfo } from "../services/errors/info.error.js";
+import { generatePetErrorInfo, invalidRequest } from "../services/errors/info.error.js";
 import listError from "../services/errors/list.error.js";
 import { petsService } from "../services/index.js"
 import __dirname from "../utils/index.js";
-import { isValidObjectId } from "mongoose";
 
 const getAllPets = async (req, res) => {
     try {
@@ -38,10 +37,6 @@ const updatePet = async (req, res, next) => {
     const petUpdateBody = req.body;
     const petId = req.params.pid;
     try {
-        if (!isValidObjectId(petId)) {
-            const error = new CustomError(invalidIdErrorInfo(petId), listError.INVALID_PARAM_ERROR)
-            return next(error)
-        }
         const result = await petsService.update(petId, petUpdateBody);
         if (!result) {
             const error = new CustomError(invalidRequest("pet", petId), listError.INVALID_REQUEST)

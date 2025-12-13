@@ -1,7 +1,6 @@
 const listError = {
     INVALID_TYPES_ERROR:1 ,
-    INVALID_PARAM_ERROR:2 ,
-    INVALID_REQUEST: 3
+    INVALID_REQUEST: 2
 }
 
 export default listError

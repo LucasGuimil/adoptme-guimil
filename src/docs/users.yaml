@@ -6,11 +6,84 @@ paths:
         - Users 
       responses: 
         "200":
-          description: "All users have been retreived from the database succesfully!"
+          description: "All users have been retreived from the database successfully!"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/User'
         "500":
-          description: "Error trying to fetch all users."
-
-
+          description: "Error trying to get all users."
+  /api/users/{uid}:
+    get:
+      summary: Obtain a user by ID
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: User's ID to search in the database.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User found successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "404":
+          description: User not found.
+        "500":
+          description: Error trying to get user by ID.
+    put:
+      summary: Modify a user by ID
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: User's ID to search in the database.
+          schema:
+            type: string
+      requestBody: 
+        required: true
+        content: 
+          application/json:
+            schema: 
+              $ref: '#components/requestBodies/updateUser'
+      responses:
+        "200":
+          description: User updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "404":
+          description: User not found.
+        "500":
+          description: Error trying to update user by ID.
+    delete:
+      summary: Delete a user by ID
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: User's ID to search and delete from the database.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User deleted successfully.
+        "404":
+          description: User not found.
+        "500":
+          description: Error trying to delete user by ID.
 
 
 components: 
@@ -49,3 +122,25 @@ components:
         password: $2b$10$N6GAc47An/WV6f8lkEivAOoF6B0.8F96sIARFYapEK5ujuzPxYhqq
         role: user
         pets: "[]"
+  requestBodies:
+    updateUser: 
+      type: object
+      properties: 
+        first_name: 
+          type: string
+          description: User's first name
+        last_name: 
+          type: string
+          description: User's last name
+        email: 
+          type: string
+          description: Valid email address
+        password:
+          type: string
+          description: User's new password, before hash.
+      example: 
+        first_name: Jane
+        last_name: Smith
+        email: newemail@mail.com
+        password: 123456
+

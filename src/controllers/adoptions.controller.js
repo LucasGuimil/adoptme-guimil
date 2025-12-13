@@ -1,6 +1,5 @@
 import { adoptionsService, petsService, usersService } from "../services/index.js"
-import { invalidIdErrorInfo, invalidRequest } from "../services/errors/info.error.js";
-import { isValidObjectId } from "mongoose";
+import { invalidRequest } from "../services/errors/info.error.js";
 
 const getAllAdoptions = async (req, res) => {
     try {
@@ -15,10 +14,6 @@ const getAllAdoptions = async (req, res) => {
 const getAdoption = async (req, res, next) => {
     const adoptionId = req.params.aid;
     try {
-        if (!isValidObjectId(adoptionId)) {
-            const error = new CustomError(invalidIdErrorInfo(adoptionId), listError.INVALID_PARAM_ERROR)
-            return next(error)
-        }
         const adoption = await adoptionsService.getBy({ _id: adoptionId })
         if (!adoption) {
             const error = new CustomError(invalidRequest("adoption", adoptionId), listError.INVALID_REQUEST)

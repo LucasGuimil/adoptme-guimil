@@ -17,10 +17,6 @@ export const generatePetErrorInfo = (pet)=> {
     `
 }
 
-export const invalidIdErrorInfo = (id) => {
-    return `The provided ID is not valid, needs to be a valid ObjectID, received ${typeof(id)}(${id}).`
-}
-
 export const invalidRequest = (type, data) => {
     return `The required ${type} with value ${data} is not found in our database.`
 }

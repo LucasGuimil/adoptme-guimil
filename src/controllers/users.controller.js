@@ -1,7 +1,6 @@
-import { isValidObjectId } from "mongoose";
 import { usersService } from "../services/index.js"
 import CustomError from "../services/errors/CustomError.js";
-import { invalidIdErrorInfo, invalidRequest } from "../services/errors/info.error.js";
+import { invalidRequest } from "../services/errors/info.error.js";
 import listError from "../services/errors/list.error.js";
 
 const getAllUsers = async (req, res) => {
@@ -17,10 +16,6 @@ const getAllUsers = async (req, res) => {
 const getUser = async (req, res, next) => {
     const userId = req.params.uid;
     try {
-        if (!isValidObjectId(userId)) {
-            const error = new CustomError(invalidIdErrorInfo(userId), listError.INVALID_PARAM_ERROR)
-            return next(error)
-        }
         const user = await usersService.getUserById(userId);
         if (!user) {
             const error = new CustomError(invalidRequest("user", userId), listError.INVALID_REQUEST)
@@ -38,10 +33,6 @@ const updateUser = async (req, res, next) => {
     const updateBody = req.body;
     const userId = req.params.uid;
     try {
-        if (!isValidObjectId(userId)) {
-            const error = new CustomError(invalidIdErrorInfo(userId), listError.INVALID_PARAM_ERROR)
-            return next(error)
-        }
         const user = await usersService.getUserById(userId);
         if (!user) {
             const error = new CustomError(invalidRequest("user", userId), listError.INVALID_REQUEST)
