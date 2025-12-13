@@ -48,3 +48,4 @@ export const logger = winston.createLogger({
     transports: [transportFile,transportConsole]
 })
 
+export const stream = { write: (message)=> {logger.http(message.trim())}}

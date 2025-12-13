@@ -1,2 +1,9 @@
-{"level":"fatal","message":"Error trying to connect database.","timestamp":"2025-12-12T19:16:12.943Z"}
-{"level":"fatal","message":"Error trying to connect database.","timestamp":"2025-12-12T19:16:34.049Z"}
+{"level":"fatal","message":"Error trying to connect database.","timestamp":"2025-12-12T23:41:21.996Z"}
+{"level":"fatal","message":"Fatal error in dev mode.","timestamp":"2025-12-12T23:51:10.249Z"}
+{"level":"error","message":"Error in dev mode.","timestamp":"2025-12-12T23:51:10.253Z"}
+{"level":"fatal","message":"Fatal error in dev mode.","timestamp":"2025-12-12T23:51:57.122Z"}
+{"level":"error","message":"Error in dev mode.","timestamp":"2025-12-12T23:51:57.128Z"}
+{"level":"fatal","message":"Fatal error in dev mode.","timestamp":"2025-12-12T23:57:54.141Z"}
+{"level":"error","message":"Error in dev mode.","timestamp":"2025-12-12T23:57:54.143Z"}
+{"level":"error","message":"Unable to get all users.","timestamp":"2025-12-13T00:00:51.920Z"}
+{"level":"error","message":"Error trying to get all users.","timestamp":"2025-12-13T00:04:50.846Z"}
