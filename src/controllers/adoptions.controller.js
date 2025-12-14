@@ -4,6 +4,7 @@ import { invalidRequest } from "../services/errors/info.error.js";
 const getAllAdoptions = async (req, res) => {
     try {
         const result = await adoptionsService.getAll();
+        req.logger.info("All adoptions has been founded and returned")
         res.send({ status: "success", payload: result })
     } catch (error) {
         req.logger.error("Error trying to get all adoptions.")
@@ -19,6 +20,7 @@ const getAdoption = async (req, res, next) => {
             const error = new CustomError(invalidRequest("adoption", adoptionId), listError.INVALID_REQUEST)
             return next(error)
         }
+        req.logger.info("Adoption found by ID")
         res.send({ status: "success", payload: adoption })
     } catch (error) {
         req.logger.error(`Error trying to get adoption: ${adoptionId}`)
@@ -47,7 +49,7 @@ const createAdoption = async (req, res, next) => {
         await usersService.update(user._id, { pets: user.pets })
         await petsService.update(pet._id, { adopted: true, owner: user._id })
         await adoptionsService.create({ owner: user._id, pet: pet._id })
-        req.logger.info("Adoption succesfull!")
+        req.logger.info("Adoption successfull!")
         res.send({ status: "success", message: "Pet adopted" })
     } catch (error) {
         req.logger.error(`Error trying to create adoption.`)

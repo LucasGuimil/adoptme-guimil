@@ -36,16 +36,21 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
     const { email, password } = req.body;
     try {
-        if (!email || !password) return res.status(400).send({ status: "error", error: "Incomplete values" });
+        if (!email || !password) {
+            req.logger.warning("Incomplete values")
+            return res.status(400).send({ status: "error", error: "Incomplete values" })}
         const user = await usersService.getUserByEmail(email);
         if (!user) {
-            const error = new CustomError(invalidRequest("user", userId), listError.INVALID_REQUEST)
+            const error = new CustomError(invalidRequest("user", user.email), listError.INVALID_REQUEST)
             return next(error)
         }
         const isValidPassword = await passwordValidation(user, password);
-        if (!isValidPassword) return res.status(400).send({ status: "error", error: "Incorrect password" });
+        if (!isValidPassword) {
+            req.logger.warning("Incorrect password")
+            return res.status(400).send({ status: "error", error: "Incorrect password" })}
         const userDto = UserDTO.getUserTokenFrom(user);
         const token = jwt.sign(userDto, 'tokenSecretJWT', { expiresIn: "1h" });
+        req.logger.info("Logged in successfully!")
         res.cookie('coderCookie', token, { maxAge: 3600000 }).send({ status: "success", message: "Logged in" })
     } catch (error) {
         req.logger.error(`Error trying to login`)
@@ -55,11 +60,13 @@ const login = async (req, res, next) => {
 
 const current = async (req, res) => {
     try {
-    const cookie = req.cookies['coderCookie']
-    const user = jwt.verify(cookie, 'tokenSecretJWT');
-    if (user)
-        return res.send({ status: "success", payload: user })
-    }catch(error){
+        const cookie = req.cookies['coderCookie']
+        const user = jwt.verify(cookie, 'tokenSecretJWT');
+        if (user){
+            req.logger.info("Current user information retrieved")
+            return res.send({ status: "success", payload: user })
+        }
+    } catch (error) {
         req.logger.error(`Error trying to get current session`)
         res.status(500).send()
     }
@@ -67,20 +74,39 @@ const current = async (req, res) => {
 
 const unprotectedLogin = async (req, res) => {
     const { email, password } = req.body;
-    if (!email || !password) return res.status(400).send({ status: "error", error: "Incomplete values" });
-    const user = await usersService.getUserByEmail(email);
-    if (!user) return res.status(404).send({ status: "error", error: "User doesn't exist" });
-    const isValidPassword = await passwordValidation(user, password);
-    if (!isValidPassword) return res.status(400).send({ status: "error", error: "Incorrect password" });
-    const token = jwt.sign(user, 'tokenSecretJWT', { expiresIn: "1h" });
-    res.cookie('unprotectedCookie', token, { maxAge: 3600000 }).send({ status: "success", message: "Unprotected Logged in" })
+    try {
+        if (!email || !password) {
+            req.logger.warning("Incomplete values")
+            return res.status(400).send({ status: "error", error: "Incomplete values" })}
+        const user = await usersService.getUserByEmail(email);
+        if (!user) {
+            const error = new CustomError(invalidRequest("user", user.email), listError.INVALID_REQUEST)
+            return next(error)
+        }
+        const isValidPassword = await passwordValidation(user, password);
+        if (!isValidPassword) {
+            req.logger.warning("Incorrect password")
+            return res.status(400).send({ status: "error", error: "Incorrect password" })}
+        const token = jwt.sign(user, 'tokenSecretJWT', { expiresIn: "1h" });
+        res.cookie('unprotectedCookie', token, { maxAge: 3600000 }).send({ status: "success", message: "Unprotected Logged in" })
+        req.logger.info("Unprotected Logged in")
+    } catch (error) {
+        req.logger.error(`Error trying to unprotected login`)
+        res.status(500).send()
+    }
 }
 const unprotectedCurrent = async (req, res) => {
-    const cookie = req.cookies['unprotectedCookie']
-    const user = jwt.verify(cookie, 'tokenSecretJWT');
-    if (user)
-        return res.send({ status: "success", payload: user })
+    try {
+        const cookie = req.cookies['unprotectedCookie']
+        const user = jwt.verify(cookie, 'tokenSecretJWT');
+        if (user)
+            return res.send({ status: "success", payload: user })
+    } catch (error) {
+        req.logger.error(`Error trying to get unprotected current session`)
+        res.status(500).send()
+    }
 }
+
 export default {
     current,
     login,

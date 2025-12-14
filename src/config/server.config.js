@@ -38,7 +38,10 @@ const initializeServer = async ()=> {
     app.use('/api/mocks', mockRouter)
 
     app.use(errorHandler)
-    app.listen(config.port, () => {logger.info(`Listening on port ${config.port}`)})
+    app.listen(config.port, () => {
+        logger.info(`Listening on port http://localhost:${config.port}`)
+        logger.info(`API documentation on http://localhost:${config.port}/apidocs`)
+    })
 }
 
 export default initializeServer
