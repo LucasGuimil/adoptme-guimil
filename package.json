@@ -5,9 +5,12 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js --mode dev",
-    "test": "mocha test/pets.test.js"
+    "start": "node src/server.js --mode prod",
+    "dev": "nodemon src/server.js",
+    "test": "mocha ./test/**/*.test.js",
+    "test:users": "mocha ./test/user.session.test.js",
+    "test:pets": "mocha ./test/pets.test.js",
+    "test:petsimg": "mocha ./test/pets.image.test.js"
   },
   "keywords": [],
   "author": "",

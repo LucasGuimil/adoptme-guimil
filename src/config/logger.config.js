@@ -31,7 +31,8 @@ const transportConsole = new winston.transports.Console({
         winston.format.printf(({timestamp, level, message})=>{
             return `[${timestamp}] ${level}: ${message}`
         })
-    )
+    ),
+    silent: config.test
 })
 
 const transportFile = new winston.transports.File({

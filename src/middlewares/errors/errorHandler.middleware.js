@@ -13,4 +13,5 @@ export default (error, req, res, next) => {
             res.status(400).send({ status: "error", error: "Unhandled error" })
             break
     }
+    next()
 }

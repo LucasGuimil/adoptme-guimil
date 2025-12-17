@@ -127,7 +127,7 @@ components:
           description: Pet's specie
         birthDate:
           type: date
-          description: Pet's date of birth
+          description: Pet's date of birth in format YYYY-MM-DD
         adopted: 
           type: boolean
           description: Indicates if the pet is already adopted, has a default value of false
@@ -141,7 +141,7 @@ components:
         _id: ObjectId("64af3ead2d3a8cac83dfbc34")
         name: Pepe
         specie: Toad
-        birthDate: 10/11/2025
+        birthDate: 2025-11-10
         adopted: "false"
         owner: ""
         image: "http://example.com/images/pepe"
@@ -159,7 +159,7 @@ components:
           required: true
         birthDate:
           type: date
-          description: New pet's date of birth
+          description: New pet's date of birth in format YYYY-MM-DD
           required: true
         adopted: 
           type: boolean
@@ -184,7 +184,7 @@ components:
           required: true
         birthDate:
           type: date
-          description: New pet's date of birth
+          description: New pet's date of birth in format YYYY-MM-DD
           required: true
         adopted: 
           type: boolean
@@ -199,7 +199,7 @@ components:
       example: 
         name: Garfield
         specie: cat
-        birthDate: 25/12/2023
+        birthDate: 2023-12-25
         image: "example.com/image/garfield-foto"
     updatePet: 
       type: object
@@ -212,11 +212,11 @@ components:
           description: New pet's specie
         birthDate:
           type: date
-          description: New pet's date of birth
+          description: New pet's date of birth in format YYYY-MM-DD
         image: 
           type: string
           description: Path to the pet's image.
       example: 
         name: Manuelita
         specie: turtle
-        birthDate: 30/10/1996
+        birthDate: 1996-10-15

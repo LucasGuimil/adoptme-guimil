@@ -14,3 +14,17 @@
 {"level":"error","message":"Error trying to get unprotected current session","timestamp":"2025-12-14T20:32:59.610Z"}
 {"level":"error","message":"Error trying to get unprotected current session","timestamp":"2025-12-14T20:33:21.138Z"}
 {"level":"error","message":"Error trying to get unprotected current session","timestamp":"2025-12-14T20:33:30.454Z"}
+{"level":"error","message":"Error trying to create new pet.","timestamp":"2025-12-15T22:32:55.330Z"}
+{"level":"error","message":"Error trying to create new pet.","timestamp":"2025-12-15T22:37:01.696Z"}
+{"level":"error","message":"Error trying to create new pet.","timestamp":"2025-12-15T22:38:40.740Z"}
+{"level":"error","message":"Error trying to create new pet.","timestamp":"2025-12-15T22:44:10.025Z"}
+{"level":"error","message":"Error trying to create new pet.","timestamp":"2025-12-15T22:46:50.638Z"}
+{"level":"error","message":"Error trying to create new pet.","timestamp":"2025-12-15T22:47:16.986Z"}
+{"level":"error","message":"Error trying to create new pet.","timestamp":"2025-12-15T22:48:02.397Z"}
+{"level":"error","message":"Error trying to create new pet.","timestamp":"2025-12-15T22:50:22.284Z"}
+{"level":"error","message":"Error trying to create new pet.","timestamp":"2025-12-15T22:51:14.513Z"}
+{"level":"error","message":"Error trying to create new pet.","timestamp":"2025-12-15T22:53:33.493Z"}
+{"level":"error","message":"Error trying to create new pet.","timestamp":"2025-12-15T23:11:01.943Z"}
+{"level":"error","message":"Error trying to create new pet.","timestamp":"2025-12-15T23:12:11.926Z"}
+{"level":"error","message":"Error trying to create new pet.","timestamp":"2025-12-15T23:13:04.109Z"}
+{"level":"error","message":"Error trying to create pet with image.","timestamp":"2025-12-17T02:49:12.230Z"}

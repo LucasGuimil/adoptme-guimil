@@ -3,6 +3,7 @@ import { generatePetErrorInfo, invalidRequest } from "../services/errors/info.er
 import listError from "../services/errors/list.error.js";
 import { petsService } from "../services/index.js"
 import __dirname from "../utils/index.js";
+import CustomError from "../services/errors/CustomError.js";
 
 const getAllPets = async (req, res) => {
     try {
@@ -19,7 +20,9 @@ const createPet = async (req, res, next) => {
         const { name, specie, birthDate } = req.body;
         if (!name || !specie || !birthDate) {
             const error = new CustomError(generatePetErrorInfo({ name, specie, birthDate }), listError.INVALID_TYPES_ERROR)
+            req.logger.debug("Enter to error handler middleware")
             return next(error)
+            /* return res.status(400).send({status: "error", message: "One or more properties are missing."}) */
         }
         const pet = PetDTO.getPetInputFrom({ name, specie, birthDate });
         const result = await petsService.create(pet);
