@@ -8,9 +8,10 @@
     "start": "node src/server.js --mode prod",
     "dev": "nodemon src/server.js",
     "test": "mocha ./test/**/*.test.js",
-    "test:users": "mocha ./test/user.session.test.js",
+    "test:users": "mocha ./test/user.test.js",
     "test:pets": "mocha ./test/pets.test.js",
-    "test:petsimg": "mocha ./test/pets.image.test.js"
+    "test:sessions": "mocha ./test/sessions.test.js",
+    "test:adoptions": "mocha ./test/adoptions.test.js"
   },
   "keywords": [],
   "author": "",

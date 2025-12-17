@@ -49,11 +49,12 @@ const updateUser = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
     const userId = req.params.uid;
     try {
-        const result = await usersService.delete({ id: userId });
-        if (!result) {
+        const exist = await usersService.getUserById(userId);
+        if (!exist) {
             const error = new CustomError(invalidRequest("user", userId), listError.INVALID_REQUEST)
             return next(error)
         }
+        const result = await usersService.delete(userId);
         res.send({ status: "success", message: "User deleted" })
     } catch (error) {
         req.logger.error(`Error trying to delete user: ${userId}.`)

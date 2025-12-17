@@ -2,7 +2,9 @@ import { usersService } from "../services/index.js";
 import { createHash, passwordValidation } from "../utils/index.js";
 import jwt from 'jsonwebtoken';
 import UserDTO from '../dto/User.dto.js';
-import { generateUserErrorInfo } from "../services/errors/info.error.js";
+import { generateUserErrorInfo, invalidRequest } from "../services/errors/info.error.js";
+import CustomError from "../services/errors/CustomError.js";
+import listError from "../services/errors/list.error.js";
 
 const register = async (req, res, next) => {
     try {
@@ -26,7 +28,7 @@ const register = async (req, res, next) => {
         }
         let result = await usersService.create(user);
         req.logger.debug(result);
-        res.send({ status: "success", payload: result._id });
+        res.status(201).send({ status: "success", payload: result._id });
     } catch (error) {
         req.logger.error(`Error trying to create new user.`)
         res.status(500).send()
@@ -41,7 +43,7 @@ const login = async (req, res, next) => {
             return res.status(400).send({ status: "error", error: "Incomplete values" })}
         const user = await usersService.getUserByEmail(email);
         if (!user) {
-            const error = new CustomError(invalidRequest("user", user.email), listError.INVALID_REQUEST)
+            const error = new CustomError(invalidRequest("user", email), listError.INVALID_REQUEST)
             return next(error)
         }
         const isValidPassword = await passwordValidation(user, password);

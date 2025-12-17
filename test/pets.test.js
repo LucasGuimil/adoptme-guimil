@@ -35,7 +35,7 @@ describe("Integration tests of AdoptMe project, route /api/pets/", function () {
                 birthDate: "2025-11-12"
             }
             const result = await requester.post("/api/pets").send(validPetInfo)
-            expect(result.statusCode).to.be.eql(200)
+            expect(result.statusCode).to.be.eql(201)
             expect(result._body.payload).to.have.property("_id")
             expect(result._body.payload.adopted).to.be.false
         })
@@ -73,7 +73,10 @@ describe("Integration tests of AdoptMe project, route /api/pets/", function () {
             expect(updatedPet.name != originalPet.name).to.be.ok
         })
     })
-    describe("DELETE method",function(){
+    describe("DELETE method", function () {
+        before(async () => {
+            await mongoose.connection.dropCollection("pets")
+        })
         let petToDelete
         it("Creates a new pet and save the id", async () => {
             const validPet = {
@@ -85,7 +88,7 @@ describe("Integration tests of AdoptMe project, route /api/pets/", function () {
             petToDelete = result._body.payload
             expect(result._body.payload).to.have.property("_id")
         })
-            it("Search in the database for the id and delete the pet", async () => {
+        it("Search in the database for the id and delete the pet", async () => {
             const { statusCode } = await requester.delete(`/api/pets/${petToDelete._id}`)
             const pets = (await requester.get("/api/pets")).body.payload
             const deleted = pets.find(pet => pet._id === petToDelete._id)
@@ -107,9 +110,9 @@ describe("Integration tests of AdoptMe project, route /api/pets/", function () {
                 .field("name", validPetInfo.name)
                 .field("specie", validPetInfo.specie)
                 .field("birthDate", validPetInfo.birthDate)
-                .attach("image","./test/image/coderDog.jpg")
+                .attach("image", "./test/image/coderDog.jpg")
 
-            expect(result.statusCode).to.be.eql(200)
+            expect(result.statusCode).to.be.eql(201)
             expect(result._body.payload).to.have.property("_id")
             expect(result._body.payload.image).to.exist
         })

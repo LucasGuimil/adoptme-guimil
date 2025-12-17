@@ -22,13 +22,12 @@ const createPet = async (req, res, next) => {
             const error = new CustomError(generatePetErrorInfo({ name, specie, birthDate }), listError.INVALID_TYPES_ERROR)
             req.logger.debug("Enter to error handler middleware")
             return next(error)
-            /* return res.status(400).send({status: "error", message: "One or more properties are missing."}) */
         }
         const pet = PetDTO.getPetInputFrom({ name, specie, birthDate });
         const result = await petsService.create(pet);
         if (result) {
             req.logger.info("Pet created succesfully!")
-            res.send({ status: "success", payload: result })
+            res.status(201).send({ status: "success", payload: result })
         }
     } catch (error) {
         req.logger.error(`Error trying to create new pet.`)
@@ -85,7 +84,7 @@ const createPetWithImage = async (req, res, next) => {
         });
         req.logger.debug(pet);
         const result = await petsService.create(pet);
-        res.send({ status: "success", payload: result })
+        res.status(201).send({ status: "success", payload: result })
     } catch (error) {
         req.logger.error(`Error trying to create pet with image.`)
         res.status(500).send()
