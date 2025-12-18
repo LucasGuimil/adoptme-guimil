@@ -1,5 +1,7 @@
 import { adoptionsService, petsService, usersService } from "../services/index.js"
 import { invalidRequest } from "../services/errors/info.error.js";
+import listError from "../services/errors/list.error.js";
+import CustomError from "../services/errors/CustomError.js";
 
 const getAllAdoptions = async (req, res) => {
     try {
@@ -48,9 +50,9 @@ const createAdoption = async (req, res, next) => {
         user.pets.push(pet._id);
         await usersService.update(user._id, { pets: user.pets })
         await petsService.update(pet._id, { adopted: true, owner: user._id })
-        await adoptionsService.create({ owner: user._id, pet: pet._id })
+        const adoption = await adoptionsService.create({ owner: user._id, pet: pet._id })
         req.logger.info("Adoption successfull!")
-        res.send({ status: "success", message: "Pet adopted" })
+        res.status(201).send({ status: "success", message: "Pet adopted", payload: adoption._id })
     } catch (error) {
         req.logger.error(`Error trying to create adoption.`)
         res.status(500).send({ status: error, message: `Error trying to create adoption.` })
