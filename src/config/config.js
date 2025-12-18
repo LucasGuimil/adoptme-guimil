@@ -6,7 +6,11 @@ program.option("--mode <mode>","Coding mode", "dev")
 program.allowExcessArguments(true)
 program.parse()
 mode = program.opts().mode
-process.loadEnvFile( mode==="dev"?`./.env.development`:`./.env.production`)
+try {
+    process.loadEnvFile( mode==="dev"?`./.env.development`:`./.env.production`)
+} catch (error) {
+    console.log("File not found")
+}
 const test = process.env.npm_lifecycle_event.includes("test")
 
 export default {
