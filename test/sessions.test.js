@@ -99,4 +99,42 @@ describe("Integration tests of AdoptMe project, route /api/sessions/", function 
             expect(result.body.payload.name).to.be.eql("John Smith")
         })
     })
+    describe("Unprotected routes tests",function(){
+        let unprotectedCookie
+        it("Unprotected: Return an error when the email doesn't exists in the database", async () => {
+            const invalidUser = {
+                email: "example@mail.com",
+                password: "123456"
+            }
+            const result = await requester.post("/api/sessions/unprotectedLogin").send(invalidUser)
+            expect(result.statusCode).to.be.eql(404)
+            expect(result.body.status).to.be.eql("error")
+        })
+        it("Unprotected Login: Succesfully login of an existing user and return the unprotected cookie", async () => {
+            const validUser = {
+                email: "mail@example.com",
+                password: "123456"
+            }
+            const result = await requester.post("/api/sessions/unprotectedLogin").send(validUser)
+            const cookieResult = result.headers["set-cookie"][0]
+            expect(cookieResult).to.be.ok
+            unprotectedCookie = {
+                name: cookieResult.split("=")[0],
+                value: cookieResult.split("=")[1]
+            }
+            expect(unprotectedCookie.name).to.be.eql("unprotectedCookie")
+            expect(unprotectedCookie.value).to.be.ok
+        })
+        it("Unprotected Current: received the cookie and show all the user's information correctly",async()=>{
+            const result = await requester.get("/api/sessions/unprotectedCurrent").set("Cookie",[`${unprotectedCookie.name}=${unprotectedCookie.value}`])
+            expect(result.statusCode).to.be.eql(200)
+            expect(result.body.payload._id).to.be.ok
+            expect(result.body.payload.first_name).to.be.ok
+            expect(result.body.payload.last_name).to.be.ok
+            expect(result.body.payload.email).to.be.ok
+            expect(result.body.payload.password).to.be.ok
+            expect(result.body.payload.role).to.be.ok
+            expect(result.body.payload.pets).to.be.ok
+        })
+    })
 })

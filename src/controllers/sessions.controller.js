@@ -40,7 +40,8 @@ const login = async (req, res, next) => {
     try {
         if (!email || !password) {
             req.logger.warning("Incomplete values")
-            return res.status(400).send({ status: "error", error: "Incomplete values" })}
+            return res.status(400).send({ status: "error", error: "Incomplete values" })
+        }
         const user = await usersService.getUserByEmail(email);
         if (!user) {
             const error = new CustomError(invalidRequest("user", email), listError.INVALID_REQUEST)
@@ -49,7 +50,8 @@ const login = async (req, res, next) => {
         const isValidPassword = await passwordValidation(user, password);
         if (!isValidPassword) {
             req.logger.warning("Incorrect password")
-            return res.status(400).send({ status: "error", error: "Incorrect password" })}
+            return res.status(400).send({ status: "error", error: "Incorrect password" })
+        }
         const userDto = UserDTO.getUserTokenFrom(user);
         const token = jwt.sign(userDto, 'tokenSecretJWT', { expiresIn: "1h" });
         req.logger.info("Logged in successfully!")
@@ -64,7 +66,7 @@ const current = async (req, res) => {
     try {
         const cookie = req.cookies['coderCookie']
         const user = jwt.verify(cookie, 'tokenSecretJWT');
-        if (user){
+        if (user) {
             req.logger.info("Current user information retrieved")
             return res.send({ status: "success", payload: user })
         }
@@ -74,33 +76,36 @@ const current = async (req, res) => {
     }
 }
 
-const unprotectedLogin = async (req, res) => {
+const unprotectedLogin = async (req, res, next) => {
     const { email, password } = req.body;
     try {
         if (!email || !password) {
             req.logger.warning("Incomplete values")
-            return res.status(400).send({ status: "error", error: "Incomplete values" })}
+            return res.status(400).send({ status: "error", error: "Incomplete values" })
+        }
         const user = await usersService.getUserByEmail(email);
         if (!user) {
-            const error = new CustomError(invalidRequest("user", user.email), listError.INVALID_REQUEST)
+            const error = new CustomError(invalidRequest("user", email), listError.INVALID_REQUEST)
             return next(error)
         }
         const isValidPassword = await passwordValidation(user, password);
         if (!isValidPassword) {
             req.logger.warning("Incorrect password")
-            return res.status(400).send({ status: "error", error: "Incorrect password" })}
-        const token = jwt.sign(user, 'tokenSecretJWT', { expiresIn: "1h" });
-        res.cookie('unprotectedCookie', token, { maxAge: 3600000 }).send({ status: "success", message: "Unprotected Logged in" })
+            return res.status(400).send({ status: "error", error: "Incorrect password" })
+        }
+        const payload = {...user._doc}
+        const token = jwt.sign(payload,"tokenSecretJW",{expiresIn: "1h"})
         req.logger.info("Unprotected Logged in")
+        res.cookie('unprotectedCookie', token, { maxAge: 3600000 }).send({ status: "success", message: "Unprotected Logged in" })
     } catch (error) {
         req.logger.error(`Error trying to unprotected login`)
         res.status(500).send()
     }
 }
-const unprotectedCurrent = async (req, res) => {
+const unprotectedCurrent = async (req, res, next) => {
     try {
         const cookie = req.cookies['unprotectedCookie']
-        const user = jwt.verify(cookie, 'tokenSecretJWT');
+        const user = jwt.verify(cookie, "tokenSecretJW");
         if (user)
             return res.send({ status: "success", payload: user })
     } catch (error) {
